@@ -1,80 +1,116 @@
-/** \file       main.cpp
- * \brief       His file contains a small shaped-drawing program
- * \author      Minh Nguyen Truong Quang
- * \date        19/05/2024
- * \copyright   UNIC
- * <BR>
+/** \file Source.cpp
+ *  \brief     A little program
+ *  \details   The program source to show the menu of options
+ *  \author    Minh Nguyen Truong Quang Minh
+ *  \version   0.1
+ *  \date      26/05/2024
+ *  \pre       First initialize the system.
+ *  \bug       No bugs so far
+ *  \copyright University of Nicosia.
  */
+
 #include <iostream>
-#include <cassert>
-#include <cstdlib>
-#include <ctime>
-#include "Shapes.h"
+#include "Matrix.h"
 
 using namespace std;
 
-// Global constants
-const int MAX_SHAPES = 10;
-const int MIN_LENGTH = 5;
-const int MAX_LENGTH = 20;
+// Fun prototypes
+void showMenu();
+
 /**
-* <code>main</code> is the main function of this program.
-* <BR>
-* @return Returns 0 if success, any other value otherwise.
-*/
+ * The <code>main</code> is the driver function that kick-starts the
+ * application.
+ * <BR>
+ * @return Returns <code>0</code> on success, any other value otherwise.
+ */
 int main() {
     int choice = 0;
-    int length, row, numShape = 0;
-    char ch;
-    int shapeType[MAX_SHAPES] = { 0 }, shapeLength[MAX_SHAPES] = { 0 };
-    char shapeChar[MAX_SHAPES] = { 0 };
+
+    // Defining the matrix
+    const int MAX_ROW = 5;
+    double mat[MAX_ROW][MAX_COL];
+    double* sumRows;
+    double* sumCols;
+
     do {
-        cout << "Enter your Option (1 -> 7):" << endl;
+        showMenu();
         cin >> choice;
-        switch (choice) {
+
+        switch (choice)
+        {
         case 1:
-            cout << "Enter your length of the line:" << endl;
-            cin >> length;
-            cout << "Enter your character:" << endl;
-            cin >> ch;
-            drawHorizontalLine(length, ch);
+            fillWithRandomNum(mat, MAX_ROW);
             break;
         case 2:
-            cout << "Enter your length of the line:" << endl;
-            cin >> length;
-            cout << "Enter your character:" << endl;
-            cin >> ch;
-            drawVerticalLine(length, ch);
+            int row;
+            cout << "\nEnter the row you want to sum: ";
+            cin >> row;
+
+            cout << "\nSum of row is: " << sumOfRow(mat, row, MAX_ROW);
             break;
         case 3:
-            cout << "Enter your length of the square:" << endl;
-            cin >> length;
-            cout << "Enter your character:" << endl;
-            cin >> ch;
-            drawSquare(length, ch);
+            int collumn;
+            cout << "\nEnter the collumn you want to sum: ";
+            cin >> collumn;
+
+            cout << "\nSum of collumn is: " << sumOfCol(mat, collumn, MAX_ROW);
             break;
         case 4:
-            cout << "Enter your height of the rectangle:" << endl;
-            cin >> row;
-            cout << "Enter your length of the rectangle:" << endl;
-            cin >> length;
-            cout << "Enter your character:" << endl;
-            cin >> ch;
-            drawRectangle(row, length, ch);
+            printMatrix(mat, MAX_ROW);
+            break;
+        case 5:
+            if (!makeIdentityMatrix(mat, MAX_ROW))
+                cerr << "\nNot a square matrix, cannot apply function";
             break;
         case 6:
-            cout << "Enter the number of shapes you want (From 1 to 10 shapes):" << endl;
-            cin >> numShape;
-            drawShape(numShape);
+            if (isIdentityMatrix(mat, MAX_ROW))
+                cout << "\nMatrix is an identity matrix";
+            else
+                cout << "\nMatrix is NOT an identity matrix";
             break;
-        case 7: // draw random with arrays
-            initArrays(shapeType, shapeLength, shapeChar, MAX_SHAPES);
-            drawArrays(shapeType, shapeLength, shapeChar, MAX_SHAPES);
+        case 7:
+            cout << "\nSum of diagonal is: " << sumOfDiagonal(mat, MAX_ROW);
+            break;
+        case 8:
+            sumRows = sumOfRows(mat, MAX_ROW);
+
+            for (int i = 0; i < MAX_ROW; ++i)
+                cout << "\nSum of row " << i << ": " << sumRows[i];
+
+            delete[] sumRows;
+            break;
+        case 9:
+            sumCols = sumOfCols(mat, MAX_ROW);
+
+            for (int i = 0; i < MAX_ROW; ++i)
+                cout << "\nSum of cols " << i << ": " << sumCols[i];
+
+            delete[] sumCols;
+            break;
+        case 0:
             break;
         default:
-            break;
+            cerr << "\nWrong choice";
         }
-    } while (choice != 5);
+    } while (choice != 0);
 
+    cout << "\nHave a nice day:)";
     return 0;
+}
+
+/**
+ * The <code>showMenu</code> function displays the menu options to the user.
+ */
+void showMenu() {
+    cout << "\n1) Fill Matrix with random numbers";
+    cout << "\n2) Sum of a specific row";
+    cout << "\n3) Sum of a specific column";
+    cout << "\n4) Show matrix";
+    cout << "\n5) Make Identity Matrix";
+    cout << "\n6) Test if Identity Matrix";
+    cout << "\n7) Sum of Diagonal";
+    cout << "\n8) Sum of all rows";
+    cout << "\n9) Sum of all cols";
+    cout << "\n0) Exit";
+    cout << "\nEnter choice: ";
 }
