@@ -157,7 +157,7 @@ double sumOfRow(const double mat[][MAX_COL], const int row, const int maxRow) {
     for (i = 0; i < MAX_COL; ++i)
         sum += mat[row][i];
 
-    assert(i == maxRow);
+    assert(i == MAX_COL);
     return sum;
 }
 /**
@@ -170,15 +170,14 @@ double sumOfRow(const double mat[][MAX_COL], const int row, const int maxRow) {
  */
 double sumOfCol(const double mat[][MAX_COL], const int collumn, const int maxRow) {
     assert(collumn >= 0 && collumn < maxRow);
-    int i, j;
+    int j;
     double sum = 0;
 
-    for (i = 0; i < MAX_COL; ++i) {
-
-        sum += mat[i][collumn];
+    for (j = 0; j < maxRow; ++j){
+        sum += mat[j][collumn];
     }
-
-    assert(i == maxRow);
+   
+    assert(j == maxRow);
     return sum;
 }
 
